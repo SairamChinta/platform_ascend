@@ -1,0 +1,80 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./node_modules/@prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  name     String
+  email    String
+  password String
+  ceeds     Ceed[]
+}
+
+model Ceed {
+  id           String  @id @default(uuid())
+  triggerId    String
+  userId       Int
+  trigger      Trigger?
+  actions      Action[]
+  ceedRuns      CeedRun[]
+  user         User @relation(fields: [userId], references: [id])
+}
+
+model Trigger {
+  id          String  @id @default(uuid())
+  ceedId       String  @unique
+  triggerId   String
+  metadata    Json  @default("{}")
+  type  AvailableTrigger @relation(fields: [triggerId], references: [id])
+  ceed  Ceed                @relation(fields: [ceedId], references: [id])
+}
+
+model Action {
+  id        String  @id @default(uuid())
+  ceedId     String  
+  ceed       Ceed     @relation(fields: [ceedId], references: [id])
+  actionId  String
+  metadata    Json  @default("{}")
+  type      AvailableAction @relation(fields: [actionId], references: [id])
+  sortingOrder Int    @default(0)
+}
+
+model AvailableAction {
+  id       String @id @default(uuid())
+  name     String
+  image    String?
+  actions  Action[]
+}
+
+model AvailableTrigger {
+  id       String @id @default(uuid())
+  name     String 
+  image    String?
+  triggers Trigger[]
+}
+
+model CeedRun {
+  id           String @id @default(uuid())
+  ceedId        String
+  metadata     Json
+  ceed          Ceed @relation(fields: [ceedId], references: [id])
+  ceedRunOutbox CeedRunOutbox?
+}
+
+model CeedRunOutbox {
+  id          String @id @default(uuid())
+  ceedRunId    String @unique
+  ceedRun      CeedRun @relation(fields: [ceedRunId], references: [id])
+}

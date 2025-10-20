@@ -1,0 +1,73 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  name     String
+  email    String
+  password String
+  ceeds    Ceed[]
+}
+
+model Ceed {
+  id        String    @id @default(uuid())
+  userId    Int
+  triggerId String
+  actions   Action[]
+  user      User      @relation(fields: [userId], references: [id])
+  ceedRuns  CeedRun[]
+  trigger   Trigger?
+}
+
+model Trigger {
+  id        String           @id @default(uuid())
+  ceedId    String           @unique
+  triggerId String
+  metadata  Json             @default("{}")
+  ceed      Ceed             @relation(fields: [ceedId], references: [id])
+  type      AvailableTrigger @relation(fields: [triggerId], references: [id])
+}
+
+model Action {
+  id           String          @id @default(uuid())
+  ceedId       String
+  actionId     String
+  sortingOrder Int             @default(0)
+  metadata     Json            @default("{}")
+  type         AvailableAction @relation(fields: [actionId], references: [id])
+  ceed         Ceed            @relation(fields: [ceedId], references: [id])
+}
+
+model AvailableAction {
+  id      String   @id @default(uuid())
+  name    String
+  image   String?
+  actions Action[]
+}
+
+model AvailableTrigger {
+  id       String    @id @default(uuid())
+  name     String
+  image    String?
+  triggers Trigger[]
+}
+
+model CeedRun {
+  id            String         @id @default(uuid())
+  ceedId        String
+  metadata      Json
+  ceed          Ceed           @relation(fields: [ceedId], references: [id])
+  ceedRunOutbox CeedRunOutbox?
+}
+
+model CeedRunOutbox {
+  id        String  @id @default(uuid())
+  ceedRunId String  @unique
+  ceedRun   CeedRun @relation(fields: [ceedRunId], references: [id])
+}
