@@ -11,12 +11,6 @@ router.get("/available",async (req, res) =>{
             image: true
           }
     })
-    // await prismaClient.trigger.create({
-    //     data: {
-    //       name: 'Webhook',
-    //       image: 'https://example.com/image.png'
-    //     }
-    //   });
     res.json({
         availableTriggers
     })

@@ -1,9 +1,11 @@
 ## TODOS
-1. { "comment":{
-        "email":"sairamyadav694@gmail.com",
+1.{
+    "comment":{
+        "email":"urzsairamyadav27@gmail.com",
         "amount":"0.1",
-        "address":"hfgdshg43689dhjgd78923e"
-}}
+        "address":"9TkgwvNRr433tLudynoXiNhBPxfLAsR2WwnMgezvJJWS"
+    }
+}
 only this way we have to comment in github.
 here, we have to know how it hits webhook url (http://localhost:3002/hooks/catch/1/45fb2549-5030-4079-b572-db7e002cd136) from github. and make sure it connected.
 2. for sending emails user has to verify.so, send the user verfication eamil, make them verify email before signing them up

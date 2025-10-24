@@ -1,1 +1,1 @@
-{"root":["./src/email.ts","./src/index.ts","./src/parser.ts","./src/solana.ts"],"version":"5.8.3"}
+{"root":["./src/email.ts","./src/index.ts","./src/parser.ts","./src/solana.ts","./src/lib/encryption.ts","./src/webhook-trigger/index.ts"],"version":"5.9.3"}

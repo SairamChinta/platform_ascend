@@ -8,11 +8,13 @@ datasource db {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  name     String
-  email    String
-  password String
-  ceeds    Ceed[]
+  id               Int     @id @default(autoincrement())
+  name             String
+  email            String   @unique
+  isSenderVerified Boolean  @default(false)
+  password         String
+  solanaPrivateKey String?
+  ceeds            Ceed[]
 }
 
 model Ceed {
